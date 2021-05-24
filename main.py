@@ -1,26 +1,33 @@
 from sense_hat import SenseHat
 import time
 import os
-
-# Really bad way to play audio with python.
-# See pygame.org/docs/ref/music.html
 import pygame
+
+i = 0
 pygame.mixer.init()
 pygame.mixer.music.load('noise.wav')
-pygame.mixer.music.play()
 
 sense = SenseHat()
 
 sense.clear()
 
 def turn_off_alarm():
+    global i
     sense.show_letter("!", text_colour=(255,0,0))
+    pygame.mixer.music.stop()
+    i = 0
     time.sleep(1)
     alarm_time = input("Please enter a new time: ")
     sense.clear()
         
 def set_off_alarm():
+    global i
     sense.clear((255,255,255))
+    # Really bad way to play audio with python.
+    # See pygame.org/docs/ref/music.html
+    i += 1
+    if i == 1:
+        pygame.mixer.music.play()
 
 alarm_time = input("Please print what time you would like the alarm to go off (Format: hh:mm): ")
 
@@ -54,3 +61,4 @@ while True:
         continue
     else:
         sense.clear()
+
